@@ -5,7 +5,10 @@ import morgan from "morgan";
 import { Server } from "socket.io";
 
 import { F1TelemetryClient, constants } from "@racehub-io/f1-telemetry-client";
+import { PacketMotionData } from "@racehub-io/f1-telemetry-client/build/src/parsers/packets/types";
 const { PACKETS } = constants;
+
+type CarData = {}
 
 /*
  *   'port' is optional, defaults to 20777
@@ -32,16 +35,22 @@ app.use(morgan("dev"));
 
 app.use(express.static(path.join(__dirname, "../public")));
 
-Object.keys(PACKETS).forEach((key, idx) => {
+// Object.keys(PACKETS).forEach((key, idx) => {
 
-  // setInterval(() => {
-  //   client.emit(key, Math.random().toString(36).slice(2, 7))
-  // }, 500+1000*idx);
+//   // setInterval(() => {
+//   //   client.emit(key, Math.random().toString(36).slice(2, 7))
+//   // }, 500+1000*idx);
 
-  client.on(key, (data) => {
-    io.emit(key, data)
-  });
-});
+//   client.on(key, (data) => {
+//     io.emit(key, data)
+//   });
+// });
+
+client.on(PACKETS.motion, (data: PacketMotionData) => {
+  const playerIdx = data.m_header.m_playerCarIndex
+  const motionData = data.m_carMotionData[playerIdx]
+  io.emit(PACKETS.motion, motionData)
+})
 
 server.listen(3000, () =>
   console.log(`

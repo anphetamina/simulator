@@ -1,46 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>SimPanel</title>
-  </head>
 
-  <body style="background-color: rgb(6, 255, 89)">
-    <p align="center">Simulatore</p>
-    <h1>Title</h1>
-    <table border="5" id="simulator-table">
-      
-    </table>
+<head>
+  <title>SimPanel</title>
+</head>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      const ids = [
-        "motion",
-        "session",
-        "lapData",
-        "event",
-        "participants",
-        "carSetups",
-        "carTelemetry",
-        "carStatus",
-        "finalClassification",
-        "lobbyInfo",
-        "carDamage",
-        "sessionHistory",
-      ];
-        const tableId = 'simulator-table'
-      const table = document.getElementById(tableId)
-      const headerRow = table.appendChild(document.createElement('tr'))
-      const valuesRow = table.appendChild(document.createElement('tr'))
-      var socket = io();
-      Object.values(ids).forEach((key) => {
-        const header = headerRow.appendChild(document.createElement('td'))
-        header.innerHTML = key
-        const cell = valuesRow.appendChild(document.createElement('td'))
-        cell.innerHTML = 0
-        socket.on(key, (data) => {
-          cell.innerHTML = data;
-        });
-      });
-    </script>
-  </body>
+<body style="background-color: rgb(6, 255, 89)">
+  <p align="center">Simulatore</p>
+  <h1>Title</h1>
+  <table border="5" id="simulator-table">
+
+  </table>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const props = [
+      "m_worldPositionX",
+      "m_worldPositionY",
+      "m_worldPositionZ",
+      "m_worldVelocityX",
+      "m_worldVelocityY",
+      "m_worldVelocityZ",
+      "m_worldForwardDirX",
+      "m_worldForwardDirY",
+      "m_worldForwardDirZ",
+      "m_worldRightDirX",
+      "m_worldRightDirY",
+      "m_worldRightDirZ",
+      "m_gForceLateral",
+      "m_gForceLongitudinal",
+      "m_gForceVertical",
+      "m_yaw",
+      "m_pitch",
+      "m_roll",
+    ]
+    const tableId = 'simulator-table'
+    const table = document.getElementById(tableId)
+    const headerRow = table.appendChild(document.createElement('tr'))
+    const valuesRow = table.appendChild(document.createElement('tr'))
+    var socket = io()
+
+    Object.values(props).forEach((key) => {
+      const header = headerRow.appendChild(document.createElement('td'))
+      header.id = `header-${key}`
+      header.innerHTML = key
+      const cell = valuesRow.appendChild(document.createElement('td'))
+      cell.id = `cell-${key}`
+      cell.innerHTML = 0
+    });
+
+    socket.on('motion', (data) => {
+      Object.entries(data).forEach((key, val) => {
+        const cell = document.getElementById(`cell-${key}`)
+        cell.innerHTML = val
+      })
+    })
+  </script>
+</body>
+
 </html>
