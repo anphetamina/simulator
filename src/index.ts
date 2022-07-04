@@ -19,7 +19,7 @@ type CarData = {}
  *   'skipParsing' is optional, setting it to true will make the client not parse and emit content. You can consume telemetry data using forwardAddresses instead.
  *                   defaults to false
  */
-const address = { port:20777, ip: "127.0.0.1" };
+const address = { port: 21777, ip: "127.0.0.1" };
 const client = new F1TelemetryClient({ port: 20777, forwardAddresses: [address] });
 
 // // to start listening:
