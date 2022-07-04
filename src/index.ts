@@ -49,6 +49,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 client.on(PACKETS.motion, (data: PacketMotionData) => {
   const playerIdx = data.m_header.m_playerCarIndex
   const motionData = data.m_carMotionData[playerIdx]
+  // console.log(motionData)
   io.emit(PACKETS.motion, motionData)
 })
 

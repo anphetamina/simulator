@@ -50,7 +50,8 @@
     });
 
     socket.on('motion', (data) => {
-      Object.entries(data).forEach((key, val) => {
+      // console.log(data)
+      Object.entries(data).forEach(([key, val], idx) => {
         const cell = document.getElementById(`cell-${key}`)
         cell.innerHTML = val
       })
