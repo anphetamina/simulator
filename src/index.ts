@@ -34,9 +34,9 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 Object.keys(PACKETS).forEach((key, idx) => {
 
-  setInterval(() => {
-    client.emit(key, Math.random().toString(36).slice(2, 7))
-  }, 500+1000*idx);
+  // setInterval(() => {
+  //   client.emit(key, Math.random().toString(36).slice(2, 7))
+  // }, 500+1000*idx);
 
   client.on(key, (data) => {
     io.emit(key, data)
